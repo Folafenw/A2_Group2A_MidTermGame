@@ -41,7 +41,7 @@ class Player {
   }
 
   draw() {
-    // Same "simple high-contrast avatar" idea as your original. 
+    // Same "simple high-contrast avatar" idea as your original.
     fill(20, 120, 255);
     circle(this.pixelX(), this.pixelY(), this.ts * 0.6);
   }

@@ -129,7 +129,6 @@ class Level {
   }
 }
 
-
 // ---------- extra level layout ----------
 // This grid will be used when the player steps on a tile with value 4.
 // You may edit it here as a fallback, but it can also be provided by
