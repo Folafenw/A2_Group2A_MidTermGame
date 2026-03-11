@@ -179,34 +179,36 @@ class UI {
 
       for (let itemName of c.items) {
         let done = gs.isItemCollected(itemName);
+        const rowH = 40;             // taller rows for bigger icons
+        const iconSize = 28;
 
         // Item row background
         fill(done ? color(...PAL.darkGreen, 140) : color(255,255,255,12));
         noStroke();
-        rect(px + 10, y - 2, pw - 20, 24, 4);
+        rect(px + 10, y - 2, pw - 20, rowH - 4, 4);
 
-        // Checkbox
+        // Checkbox (vertically centered)
         stroke(done ? color(...PAL.green) : color(100,100,120));
         strokeWeight(1.5);
         fill(done ? color(...PAL.green) : color(30,30,40));
-        rect(px + 16, y + 3, 16, 16, 3);
+        rect(px + 16, y + (rowH - 16) / 2, 16, 16, 3);
         noStroke();
         if (done) {
           fill(255);
           textSize(12);
           textAlign(CENTER, CENTER);
-          text('✓', px + 24, y + 11);
+          text('✓', px + 24, y + rowH/2);
         }
 
-        // Item icon instead of name (bigger for clarity)
+        // Item icon instead of name
         fill(done ? color(...PAL.green) : color(210, 205, 195));
         textAlign(LEFT, CENTER);
-        textSize(28);
+        textSize(iconSize);
         textStyle(done ? BOLD : NORMAL);
-        text(ITEM_ICONS[itemName] || '?', px + 40, y + 12);
+        text(ITEM_ICONS[itemName] || '?', px + 40, y + rowH/2);
         textStyle(NORMAL);
 
-        y += 28;
+        y += rowH + 4;
       }
       y += 14; // gap between customers
     }
@@ -339,7 +341,7 @@ class UI {
     textAlign(CENTER, TOP);
     const lines = [
       '• Collect all items from the shopping list before time runs out',
-      '• If it gets too confusing — press  H  to reveal hints',
+      '• If it gets too confusingg — press  H  to reveal hints',
       '• Wrong items cost you a heart  ♥  —  lose all 3 and it\'s over',
       '• Reach the CHECKOUT counter and press E when you\'re done'
     ];

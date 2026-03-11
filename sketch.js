@@ -19,15 +19,28 @@ let keys = {};        // live key state
 // Camera offset (world→screen translate)
 let camX = 0, camY = 0;
 
-// Sound variables
+// sound variables
 let winSound, loseSound, bgMusic;
 let winPlayed = false, losePlayed = false, bgPlaying = false;
+
+// asset dictionary for images
+let assets = {};
 
 // ── p5 preload ────────────────────────────────────────────────
 function preload() {
   winSound = loadSound('Assets/Correct.mp3');
   loseSound = loadSound('Assets/Incorrect.mp3');
   bgMusic = loadSound('Assets/ELEVATOR-MUSIC_AdobeStock_452587580.wav');
+
+  // load UI background images if they exist (errors ignored)
+  assets['Win Screen'] = loadImage('Assets/Win Screen.png',
+    () => {},
+    () => { assets['Win Screen'] = null; }
+  );
+  assets['Lose Screen'] = loadImage('Assets/Lose Screen.png',
+    () => {},
+    () => { assets['Lose Screen'] = null; }
+  );
 }
 
 // ── p5 setup ──────────────────────────────────────────────────
