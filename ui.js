@@ -325,7 +325,7 @@ class UI {
     // Subtitle
     fill(...PAL.skyBlue);
     textSize(16);
-    text('🛒  A Low Vision Grocery Challenge  🛒', width/2, height/2 - 56);
+    text('🛒  A Fun Grocery Challenge  🛒', width/2, height/2 - 56);
 
     // Divider
     stroke(...PAL.royalBlue);
@@ -339,7 +339,7 @@ class UI {
     textAlign(CENTER, TOP);
     const lines = [
       '• Collect all items from the shopping list before time runs out',
-      '• Products are blurry & confusing — press  H  to reveal hints',
+      '• If it gets too confusing — press  H  to reveal hints',
       '• Wrong items cost you a heart  ♥  —  lose all 3 and it\'s over',
       '• Reach the CHECKOUT counter and press E when you\'re done'
     ];

@@ -26,8 +26,9 @@ class Item {
     this.name      = name;
     this.x         = x;
     this.y         = y;
-    this.w         = 80;
-    this.h         = 80;
+    // make items larger per user request
+    this.w         = 96;
+    this.h         = 96;
     this.aisleType = aisleType || 'Dairy';
     this.hovered   = false;
     this.collected = false;
@@ -73,7 +74,8 @@ class Item {
   draw(gs) {
     const isReq    = gs.isItemRequired(this.name);
     const hinted   = gs.hintActive && isReq;
-    const blurAmt  = hinted ? 0 : (isReq ? 5 : 3);
+    // no blur for clarity
+    const blurAmt  = 0;
 
     push();
     translate(this.x, this.y);
@@ -87,7 +89,7 @@ class Item {
     }
 
     fill(...this.bgCol);
-    rect(0, 0, this.w, this.h, 8);
+    rect(0, 0, this.w, this.h);
 
     if (blurAmt > 0 && !hinted) {
       let layers = blurAmt === 5 ? 4 : 2;
@@ -95,32 +97,30 @@ class Item {
         let a = map(d, 1, layers, 35, 8);
         fill(...this.bgCol, a);
         noStroke();
-        rect(-d, -d, this.w + d*2, this.h + d*2, 8);
+        rect(-d, -d, this.w + d*2, this.h + d*2);
       }
     }
 
     noStroke();
     textAlign(CENTER, CENTER);
-    textSize(30);
-    if (blurAmt > 0 && !hinted) {
-      fill(60, 60, 60, 140);
-    } else {
-      fill(30, 30, 30);
-    }
+    // larger icon size for bigger item
+    textSize(36);
+    fill(30, 30, 30);
     text(this.icon, this.w/2, this.h/2 - 6);
 
-    if (blurAmt > 0 && !hinted) {
-      this._drawNoise(blurAmt);
-    }
+    // noise removed; visual clutter was too much
+    // if (blurAmt > 0 && !hinted) {
+    //   this._drawNoise(blurAmt);
+    // }
 
     let labelText = hinted ? this.name : this.displayLabel;
     if (hinted) {
       fill(...PAL.darkGreen);
-      textSize(11);
+      textSize(12);
       textStyle(BOLD);
     } else {
       fill(...this.labelCol);
-      textSize(9);
+      textSize(10);
       textStyle(NORMAL);
     }
     textAlign(CENTER, BOTTOM);
@@ -129,7 +129,7 @@ class Item {
 
     if (this.collected) {
       fill(...PAL.green, 200);
-      rect(0, 0, this.w, this.h, 8);
+      rect(0, 0, this.w, this.h);
       fill(255);
       textSize(28);
       textAlign(CENTER, CENTER);
@@ -140,24 +140,14 @@ class Item {
       let pulse = 40 + 30 * sin(frameCount * 0.15);
       fill(...PAL.yellow, pulse);
       noStroke();
-      rect(0, 0, this.w, this.h, 8);
+      rect(0, 0, this.w, this.h);
     }
 
     pop();
   }
 
   _drawNoise(level) {
-    let gs = 10;
-    let density = level === 5 ? 0.12 : 0.06;
-    noStroke();
-    for (let px = 0; px < this.w; px += gs) {
-      for (let py = 0; py < this.h; py += gs) {
-        if (Math.random() < density) {
-          fill(255, 255, 255, 40);
-          rect(px, py, gs, gs);
-        }
-      }
-    }
+    // noise disabled to keep item icons clean
   }
 
   isMouseOver(mx, my) {
