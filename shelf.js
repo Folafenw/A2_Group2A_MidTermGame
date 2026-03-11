@@ -79,13 +79,7 @@ class Shelf {
     text(this.aisleType.toUpperCase(), this.x + this.w / 2, this.y + this.h / 2);
     textStyle(NORMAL);
 
-    let icons = (AISLE_STOCK[this.aisleType] || []).map(n => ITEM_ICONS[n] || '?');
-    let spacing = this.w / (icons.length + 1);
-    textSize(14);
-    for (let i = 0; i < icons.length; i++) {
-      fill(255, 255, 255, 160);
-      text(icons[i], this.x + spacing * (i + 1), this.y + this.h / 2 - 6);
-    }
+    // icons removed from top of shelf — products only appear when shelf is opened
   }
 
   drawOverlay(gs) {

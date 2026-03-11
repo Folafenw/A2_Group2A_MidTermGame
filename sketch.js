@@ -19,6 +19,17 @@ let keys = {};        // live key state
 // Camera offset (world→screen translate)
 let camX = 0, camY = 0;
 
+// Sound variables
+let winSound, loseSound, bgMusic;
+let winPlayed = false, losePlayed = false, bgPlaying = false;
+
+// ── p5 preload ────────────────────────────────────────────────
+function preload() {
+  winSound = loadSound('Assets/Correct.mp3');
+  loseSound = loadSound('Assets/Incorrect.mp3');
+  bgMusic = loadSound('Assets/ELEVATOR-MUSIC_AdobeStock_452587580.wav');
+}
+
 // ── p5 setup ──────────────────────────────────────────────────
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -48,6 +59,58 @@ function draw() {
     case STATE.WIN:          ui.drawWinScreen(); break;
     case STATE.LOSE:         ui.drawLoseScreen(gs); break;
   }
+
+  // Sound management
+  if (gs.current === STATE.WIN && !winPlayed) {
+    winSound.play();
+    winPlayed = true;
+  } else if (gs.current !== STATE.WIN) {
+    winPlayed = false;
+  }
+
+  if (gs.current === STATE.LOSE && !losePlayed) {
+    loseSound.play();
+    losePlayed = true;
+  } else if (gs.current !== STATE.LOSE) {
+    losePlayed = false;
+  }
+
+  // Updated: play music at all times except win/lose
+  if (gs.current !== STATE.WIN && gs.current !== STATE.LOSE && !bgPlaying) {
+    bgMusic.loop();
+    bgPlaying = true;
+  } else if ((gs.current === STATE.WIN || gs.current === STATE.LOSE) && bgPlaying) {
+    bgMusic.stop();
+    bgPlaying = false;
+  }
+}
+
+// Ensure audio context is running and start bg music when user interacts
+function startAudio() {
+  // ensure browser audio context is unlocked
+  userStartAudio();
+  let ctx = getAudioContext();
+  if (ctx.state !== 'running') ctx.resume();
+  if (!bgPlaying && gs.current !== STATE.WIN && gs.current !== STATE.LOSE) {
+    // if audio isn't loaded yet, wait until ready
+    if (bgMusic && bgMusic.isLoaded()) {
+      bgMusic.loop();
+      bgPlaying = true;
+    } else if (bgMusic) {
+      bgMusic.onended(() => {}); // noop to force load
+      bgMusic.play();
+      bgMusic.loop();
+      bgPlaying = true;
+    }
+  }
+}
+
+function mousePressed() {
+  startAudio();
+}
+
+function keyPressed() {
+  startAudio();
 }
 
 // ── Gameplay viewport dimensions ─────────────────────────────
@@ -352,6 +415,8 @@ function startGame() {
   keys   = {};
   camX   = 0;
   camY   = 0;
+  // make sure audio starts when game begins
+  startAudio();
 }
 
 // ── end of sketch.js ──────────────────────────────────────────

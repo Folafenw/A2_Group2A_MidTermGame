@@ -48,7 +48,7 @@ class GameState {
     this.current        = STATE.START;
     this.lives          = 3;
     this.hints          = 2;
-    this.timeLeft       = 90;
+    this.timeLeft       = 60;   // one minute limit
     this.cart           = [];      // { name } objects
     this.shoppingList   = [];      // [{ customer, items[] }]
     this.activeShelf    = null;
@@ -61,7 +61,7 @@ class GameState {
     this.current        = STATE.PLAYING;
     this.lives          = 3;
     this.hints          = 2;
-    this.timeLeft       = 90;
+    this.timeLeft       = 60;
     this.cart           = [];
     this.activeShelf    = null;
     this.hintActive     = false;
@@ -71,11 +71,11 @@ class GameState {
   }
 
   generateShoppingList() {
+    // one customer with three items
     const pool = ['Milk','Bread','Apples','Yogurt','Pasta','Ice Cream','Cornstarch'];
     let s = [...pool].sort(() => Math.random() - 0.5);
     this.shoppingList = [
-      { customer: 'Customer 1', items: [s[0], s[1]] },
-      { customer: 'Customer 2', items: [s[2], s[3]] }
+      { customer: 'Customer 1', items: [s[0], s[1], s[2]] }
     ];
   }
 

@@ -198,12 +198,12 @@ class UI {
           text('✓', px + 24, y + 11);
         }
 
-        // Item name
+        // Item icon instead of name (bigger for clarity)
         fill(done ? color(...PAL.green) : color(210, 205, 195));
         textAlign(LEFT, CENTER);
-        textSize(12);
+        textSize(28);
         textStyle(done ? BOLD : NORMAL);
-        text(itemName, px + 40, y + 11);
+        text(ITEM_ICONS[itemName] || '?', px + 40, y + 12);
         textStyle(NORMAL);
 
         y += 28;

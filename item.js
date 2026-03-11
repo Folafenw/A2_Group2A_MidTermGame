@@ -106,26 +106,29 @@ class Item {
     // larger icon size for bigger item
     textSize(36);
     fill(30, 30, 30);
-    text(this.icon, this.w/2, this.h/2 - 6);
+    text(this.icon, this.w/2, this.h/2 - 6); // always draw icon
 
     // noise removed; visual clutter was too much
     // if (blurAmt > 0 && !hinted) {
     //   this._drawNoise(blurAmt);
     // }
 
-    let labelText = hinted ? this.name : this.displayLabel;
-    if (hinted) {
-      fill(...PAL.darkGreen);
-      textSize(12);
-      textStyle(BOLD);
-    } else {
-      fill(...this.labelCol);
-      textSize(10);
+    // skip label text when drawing inside a shelf overlay
+    if (gs.current !== STATE.SHELF) {
+      let labelText = hinted ? this.name : this.displayLabel;
+      if (hinted) {
+        fill(...PAL.darkGreen);
+        textSize(12);
+        textStyle(BOLD);
+      } else {
+        fill(...this.labelCol);
+        textSize(10);
+        textStyle(NORMAL);
+      }
+      textAlign(CENTER, BOTTOM);
+      text(labelText, this.w/2, this.h - 3);
       textStyle(NORMAL);
     }
-    textAlign(CENTER, BOTTOM);
-    text(labelText, this.w/2, this.h - 3);
-    textStyle(NORMAL);
 
     if (this.collected) {
       fill(...PAL.green, 200);
