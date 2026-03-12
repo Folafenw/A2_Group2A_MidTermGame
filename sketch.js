@@ -23,9 +23,6 @@ function preload() {
   loseSound = loadSound('Assets/Incorrect.mp3');
   bgMusic   = loadSound('Assets/ELEVATOR-MUSIC_AdobeStock_452587580.wav');
 
-  assets['Win Screen']  = loadImage('Assets/Win Screen.png',  ()=>{}, ()=>{ assets['Win Screen']  = null; });
-  assets['Lose Screen'] = loadImage('Assets/Lose Screen.png', ()=>{}, ()=>{ assets['Lose Screen'] = null; });
-
   const productFiles = {
     'White Bread':        'White Bread.svg',
     'Wheat Bread':        'Wheat Bread.svg',
@@ -111,6 +108,7 @@ function startAudio() {
   if (typeof userStartAudio === 'function') userStartAudio();
   let ctx = getAudioContext();
   if (ctx && ctx.state !== 'running') ctx.resume();
+  if (!gs) return;
   if (!bgPlaying && gs.current !== STATE.WIN && gs.current !== STATE.LOSE) {
     if (bgMusic && bgMusic.isLoaded()) { bgMusic.loop(); bgPlaying = true; }
   }
