@@ -9,6 +9,7 @@ let camX = 0, camY = 0;
 // Sound
 let winSound, loseSound, bgMusic;
 let winPlayed = false, losePlayed = false, bgPlaying = false;
+let audioUnlocked = false;
 
 // Assets
 let assets = {};
@@ -96,7 +97,7 @@ function draw() {
     losePlayed = true;
   } else if (gs.current !== STATE.LOSE) { losePlayed = false; }
 
-  if (gs.current !== STATE.WIN && gs.current !== STATE.LOSE && !bgPlaying) {
+  if (audioUnlocked && gs.current !== STATE.WIN && gs.current !== STATE.LOSE && !bgPlaying) {
     if (bgMusic && bgMusic.isLoaded()) { bgMusic.loop(); bgPlaying = true; }
   } else if ((gs.current === STATE.WIN || gs.current === STATE.LOSE) && bgPlaying) {
     if (bgMusic) bgMusic.stop(); bgPlaying = false;
@@ -105,6 +106,7 @@ function draw() {
 
 // ── Audio helpers ─────────────────────────────────────────────
 function startAudio() {
+  audioUnlocked = true;
   if (typeof userStartAudio === 'function') userStartAudio();
   let ctx = getAudioContext();
   if (ctx && ctx.state !== 'running') ctx.resume();
