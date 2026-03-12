@@ -2,11 +2,25 @@
 // shelf.js  —  Grocery shelf: long in-world rectangle + overlay
 // ============================================================
 
-// Items stocked per aisle type (renamed to Bakery, Dairy, Pantry)
+// Items stocked per aisle type.  Each aisle has three shelves (row 0,1,2)
+// and we specify an array for every shelf.  Names must match the keys used in
+// sketch.js when loading SVG assets.
 const AISLE_STOCK = {
-  Bakery:  ['Bread',   'Pasta',     'Cornstarch'],
-  Dairy:   ['Milk',    'Yogurt',    'Ice Cream' ],
-  Pantry:  ['Apples',  'Pasta',     'Cornstarch']
+  Bakery: [
+    ['White Bread', 'Wheat Bread', 'Sourdough'],
+    ['Vanilla Cupcake', 'Blueberry Cupcake', 'Mint Cupcake'],
+    ['Cherry Donut', 'Orange Zest Donut', 'Strawberry Donut']
+  ],
+  Dairy: [
+    ['2% Milk', 'Almond Milk', 'Soy Milk'],
+    ['Cherry Icecream', 'Rhubarb Icecream', 'Strawberry Icecream'],
+    ['Blue Cheese', 'Cheddar Cheese', 'Parmesan Cheese']
+  ],
+  Pantry: [
+    ['Avocado Oil', 'Olive Oil', 'Sunflower Oil'],
+    ['Almond Flour', 'White Flour', 'Whole wheat'],
+    ['White Sugar', 'Brown Sugar', 'Pasta']
+  ]
 };
 
 // Colour config per aisle (brand palette) — updated keys
@@ -17,19 +31,25 @@ const AISLE_THEME = {
 };
 
 class Shelf {
-  constructor(x, y, w, h, aisleType) {
+  // added row index so we know which subset of stock to pull
+  constructor(x, y, w, h, aisleType, rowIndex = 0) {
     this.x         = x;
     this.y         = y;
     this.w         = w;
     this.h         = h;
     this.aisleType = aisleType;
+    this.rowIndex  = rowIndex;
     this.theme     = AISLE_THEME[aisleType] || AISLE_THEME.Dairy;
     this.items     = [];
     this._buildItems();
   }
 
   _buildItems() {
-    let names    = AISLE_STOCK[this.aisleType] || [];
+    // look up the shelf‑specific array (may be undefined if configuration
+    // is wrong; default to empty list)
+    let shelves = AISLE_STOCK[this.aisleType] || [];
+    let names   = shelves[this.rowIndex] || [];
+
     let cols     = names.length;
     let itemW    = 80, itemH = 80;
     let spacing  = 30;
@@ -115,17 +135,42 @@ class Shelf {
     textSize(10);
     text('Click an item to collect it  ·  ESC to close  ·  H for hint', width / 2, py + 52);
 
-    let cols       = this._overlayCols;
-    let itemW      = this._overlayItemW;
-    let spacing    = this._overlaySpacing;
-    let totalW     = this._totalItemW;
-    let itemStartX = px + (pw - totalW) / 2;
-    let itemStartY = py + 70;
+    // Calculate sizing dynamically so items spread out and grow when
+    // there are few of them.  previously we used fixed constants which left
+    // everything cramped in the middle of the overlay.
+    let cols = this.items.length;
+    // parameters for vertical alignment (header is fixed 70px high, footer
+    // reserved space for the controls text at bottom)
+    let headerH = 70;
+    let footerH = 60;
+    let availH = ph - headerH - footerH;
 
-    for (let i = 0; i < this.items.length; i++) {
-      this.items[i].x = itemStartX + i * (itemW + spacing);
-      this.items[i].y = itemStartY;
-      this.items[i].draw(gs);
+    if (cols > 0) {
+      // horizontal padding within panel
+      const pad = 40;
+      // maximum item size we allow
+      const maxSize = 120;
+      // compute available width after padding
+      let availW = pw - pad * 2;
+      // start with equal sizes
+      let itemW = min(maxSize, floor((availW - (cols - 1) * 20) / cols));
+      // if there's leftover space, distribute as spacing
+      let spacing = cols > 1 ? (availW - cols * itemW) / (cols - 1) : 0;
+      // reposition items so entire group is centered horizontally
+      let totalW = cols * itemW + (cols - 1) * spacing;
+      let itemStartX = px + (pw - totalW) / 2;
+
+      // now that we know itemW we can vertically centre
+      let itemStartY = py + headerH + (availH / 2) - (itemW / 2);
+
+      for (let i = 0; i < cols; i++) {
+        let itm = this.items[i];
+        itm.w = itemW;
+        itm.h = itemW;
+        itm.x = itemStartX + i * (itemW + spacing);
+        itm.y = itemStartY;
+        itm.draw(gs);
+      }
     }
 
     fill(...this.theme.bg, 120);

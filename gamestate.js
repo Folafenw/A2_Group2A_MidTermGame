@@ -8,7 +8,8 @@ const STATE = {
   SHELF:        'SHELF',
   INSTRUCTIONS: 'INSTRUCTIONS',
   WIN:          'WIN',
-  LOSE:         'LOSE'
+  LOSE:         'LOSE',
+  CHARACTER:    'CHARACTER'
 };
 
 // ── Brand color palette (from supplied swatches) ─────────────
@@ -38,7 +39,7 @@ const WORLD_H = 1100;
 
 // ── Fixed UI zones ────────────────────────────────────────────
 const TOP_BAR_H     = 72;   // height of top HUD strip
-const RIGHT_PANEL_W = 230;  // width of shopping list panel
+const RIGHT_PANEL_W = 280;  // width of shopping list panel
 
 // ── Aisle X positions in world space ─────────────────────────
 const AISLE_XS = [180, 620, 1060];  // center-x of each aisle column
@@ -48,7 +49,7 @@ class GameState {
     this.current        = STATE.START;
     this.lives          = 3;
     this.hints          = 2;
-    this.timeLeft       = 60;   // one minute limit
+    this.timeLeft       = 60;
     this.cart           = [];      // { name } objects
     this.shoppingList   = [];      // [{ customer, items[] }]
     this.activeShelf    = null;
@@ -71,11 +72,11 @@ class GameState {
   }
 
   generateShoppingList() {
-    // one customer with three items
     const pool = ['Milk','Bread','Apples','Yogurt','Pasta','Ice Cream','Cornstarch'];
     let s = [...pool].sort(() => Math.random() - 0.5);
     this.shoppingList = [
-      { customer: 'Customer 1', items: [s[0], s[1], s[2]] }
+      { customer: 'Customer 1', items: [s[0], s[1]] },
+      { customer: 'Customer 2', items: [s[2], s[3]] }
     ];
   }
 

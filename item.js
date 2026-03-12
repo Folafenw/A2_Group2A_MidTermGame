@@ -4,6 +4,9 @@
 // low-contrast colours, pixel noise.
 // ============================================================
 
+// legacy emoji fallback; most items now have SVG assets loaded into
+// the shared ‘assets’ dictionary in sketch.js.  If an image is missing we
+// still show an emoji so the game remains functional.
 const ITEM_ICONS = {
   'Milk':       '🥛',
   'Bread':      '🍞',
@@ -33,6 +36,8 @@ class Item {
     this.hovered   = false;
     this.collected = false;
     this.icon      = ITEM_ICONS[name] || '❓';
+    // try to grab an image asset that may have been preloaded in sketch.js
+    this.img        = (typeof assets !== 'undefined') ? assets[name] : null;
 
     this.displayLabel = this._makeLabel(name);
     this.bgCol        = this._pickBg();
@@ -102,11 +107,18 @@ class Item {
     }
 
     noStroke();
-    textAlign(CENTER, CENTER);
-    // larger icon size for bigger item
-    textSize(36);
-    fill(30, 30, 30);
-    text(this.icon, this.w/2, this.h/2 - 6); // always draw icon
+    if (this.img) {
+      // draw the loaded SVG scaled to fit the item box
+      imageMode(CENTER);
+      image(this.img, this.w/2, this.h/2, this.w - 12, this.h - 12);
+      imageMode(CORNER);
+    } else {
+      textAlign(CENTER, CENTER);
+      // larger icon size for bigger item
+      textSize(36);
+      fill(30, 30, 30);
+      text(this.icon, this.w/2, this.h/2 - 6); // fallback emoji
+    }
 
     // noise removed; visual clutter was too much
     // if (blurAmt > 0 && !hinted) {

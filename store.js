@@ -48,9 +48,9 @@ class Store {
 
     for (let a of aisles) {
       let lx = a.cx - shelfW / 2;
-      this.shelves.push(new Shelf(lx, row1Y, shelfW, shelfH, a.type));
-      this.shelves.push(new Shelf(lx, row2Y, shelfW, shelfH, a.type));
-      this.shelves.push(new Shelf(lx, row3Y, shelfW, shelfH, a.type));
+      this.shelves.push(new Shelf(lx, row1Y, shelfW, shelfH, a.type, 0));
+      this.shelves.push(new Shelf(lx, row2Y, shelfW, shelfH, a.type, 1));
+      this.shelves.push(new Shelf(lx, row3Y, shelfW, shelfH, a.type, 2));
     }
   }
 
