@@ -1,7 +1,7 @@
-**Project Title:** A2_Group2A_MidTermGame
+**Project Title:** A2*Group2A_MidTermGame
 **Group Number:** 2A
 **Description:**
-**_Game’s concept_**
+\*\*\_Game’s concept*\*\*
 A personal shopper is assigned to shop for an individual, given three specific items they must locate and collect within a set time limit.
 Mechanics:
 Our mechanics are the player can move through the grocery store, find items and add to the shopping cart, complete the task before time runs out, and there is a legend at the side of the screen, which tells the player what items they need to get
@@ -27,8 +27,8 @@ You have two hints per level. When used, a hint will highlight the items you nee
 **_Change 3:_** We received feedback during our playtesting that there was a lack of response after selecting a product. To improve this, we added a cart feature where players can review the items they have collected, as well as a checkout screen that shows what was successfully collected and provides a final review.
 **Post-Showcase:** Two planned improvements
 
-1. Make our items more blurry or incorporate different qualities specific to the items to make it harder to notice the differences between items
-2. Add a Magnify glass mechanic that takes time and uses your time when you check it
+**_Change 1:_** On the day of the showcase, we were suggested to change the display of the items to include varying levels of blur or visual quality to increase the difficulty for the player. As well as making the items on the shelf look more similar to one another with little changes to mark each one from the other. This will not only increase the theme of low vision but force players to take more time to notice small details of the items that become more difficult to notice when blurred.
+**_Change 2:_** It was suggested by a player during the showcase that we introduce additional visual challenges in later levels to increase difficulty. In Level 2, items should be shuffled or rearranged in their respective categories to prevent players from relying on memory from the introduction level. In Level 3, lighting effects such as flickering lights or darkness (to signify store closing) should be introduced to increase the difficulty of vision while playing the game.
 
 _Assets:_ Collection of six pixel art icons for a retro video game [1]
 Elevator Music [2]
